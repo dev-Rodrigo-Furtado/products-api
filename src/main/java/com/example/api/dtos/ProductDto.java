@@ -1,5 +1,6 @@
 package com.example.api.dtos;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.example.api.entities.Category;
@@ -7,7 +8,7 @@ import com.example.api.entities.Product;
 
 public class ProductDto {
 	
-	@NotNull
+	@NotEmpty
 	private String name;
 	
 	@NotNull

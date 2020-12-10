@@ -1,12 +1,12 @@
 package com.example.api.dtos;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 import com.example.api.entities.Category;
 
 public class CategoryDto {
 
-	@NotNull
+	@NotEmpty(message = "Name must not be empty.")
 	private String name;
 
 	public String getName() {

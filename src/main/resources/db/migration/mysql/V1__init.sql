@@ -19,3 +19,12 @@ CREATE TABLE products (
 	PRIMARY KEY(id),
 	FOREIGN KEY(category_id) REFERENCES categories(id)
 );
+
+CREATE TABLE users (
+	id bigint(20) NOT NULL AUTO_INCREMENT,
+	email VARCHAR(255) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	profile VARCHAR(255) NOT NULL,
+
+	PRIMARY KEY(id)
+);
