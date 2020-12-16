@@ -1,9 +1,13 @@
 package com.example.api.services;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class ProductService {
-	
+import com.example.api.entities.Product;
+
+public interface ProductService {
+    
+    Product persist(Product product);
+    
+    List<Product> getAll();
 
 }
