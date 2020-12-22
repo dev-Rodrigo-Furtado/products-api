@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,6 +69,49 @@ public class ProductController {
     	}
     	
     	response.setData(product.get());
+    	
+    	return ResponseEntity.ok(response);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Response<Product>> updateProduct(@PathVariable Long id,
+    		@Valid @RequestBody ProductDto productDto, BindingResult result) {
+    	
+    	Response<Product> response = new Response<Product>();
+    	
+    	Optional<Product> product = productService.getById(id);
+    	
+    	if(product.isEmpty()) {
+    		response.getErrors().add("O produto não encontrado!");
+    		return ResponseEntity.badRequest().body(response);
+    	}
+    	
+    	Product productDtoConverted= productDto.toProduct();
+    	Product productResponse = product.get();
+    	productResponse.setName(productDtoConverted.getName());
+    	productResponse.setPrice(productDtoConverted.getPrice());
+    	productResponse.setAmount(productDtoConverted.getAmount());
+    	
+    	productService.persist(productResponse);
+    	
+    	response.setData(productResponse);
+    	
+    	return ResponseEntity.ok(response);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<Product>> deleteProduct(@PathVariable Long id) {
+    	
+    	Response<Product> response = new Response<Product>();
+    	
+    	Optional<Product> product = productService.getById(id);
+    	
+    	if(product.isEmpty()) {
+    		response.getErrors().add("O produto não encontrado!");
+    		return ResponseEntity.badRequest().body(response);
+    	}
+    
+    	productService.delete(product.get());
     	
     	return ResponseEntity.ok(response);
     }
