@@ -1,4 +1,4 @@
-package com.example.api.service.impl;
+package com.example.api.services.impl;
 
 import com.example.api.entities.Product;
 import com.example.api.repositories.ProductRepository;
@@ -21,12 +21,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> getAll() {
+	public List<Product> findAll() {
 		return productRepository.findAll();
 	}
 
 	@Override
-	public Optional<Product> getById(Long id) {
+	public Optional<Product> findById(Long id) {
 		return productRepository.findById(id);
 	}
 

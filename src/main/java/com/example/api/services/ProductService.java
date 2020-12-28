@@ -7,12 +7,9 @@ import com.example.api.entities.Product;
 
 public interface ProductService {
     
-    Product persist(Product product);
-    
-    List<Product> getAll();
-    
-    Optional<Product> getById(Long id);
-    
+    Product persist(Product product);    
+    List<Product> findAll();    
+    Optional<Product> findById(Long id);    
     void delete(Product product);
 
 }

@@ -32,7 +32,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Response<Product>> createProduct(@Valid @RequestBody ProductDto productDto, BindingResult result) {
+    public ResponseEntity<Response<Product>> insert(@Valid @RequestBody ProductDto productDto, BindingResult result) {
        Response<Product> response = new Response<Product>(); 
 
        if(result.hasErrors()) {
@@ -48,22 +48,22 @@ public class ProductController {
     }
     
     @GetMapping
-    public ResponseEntity<Response<List<Product>>> getAllProducts() {
+    public ResponseEntity<Response<List<Product>>> findAll() {
     	Response<List<Product>> response = new Response<List<Product>>();
     	
-    	response.setData(productService.getAll());
+    	response.setData(productService.findAll());
     	
     	return ResponseEntity.ok(response);
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Response<Product>> getProductById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Response<Product>> findById(@PathVariable(value = "id") Long id) {
     	
     	Response<Product> response = new Response<Product>();
     	
-    	Optional<Product> product = productService.getById(id);
+    	Optional<Product> product = productService.findById(id);
     	
-    	if(!product.isPresent()) {
+    	if(product.isEmpty()) {
     		response.getErrors().add("Produto não encontrado!");
     		return ResponseEntity.badRequest().body(response);
     	}
@@ -74,12 +74,12 @@ public class ProductController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Product>> updateProduct(@PathVariable Long id,
+    public ResponseEntity<Response<Product>> update(@PathVariable Long id,
     		@Valid @RequestBody ProductDto productDto, BindingResult result) {
     	
     	Response<Product> response = new Response<Product>();
     	
-    	Optional<Product> product = productService.getById(id);
+    	Optional<Product> product = productService.findById(id);
     	
     	if(product.isEmpty()) {
     		response.getErrors().add("O produto não encontrado!");
@@ -100,11 +100,11 @@ public class ProductController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Product>> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Response<Product>> delete(@PathVariable Long id) {
     	
     	Response<Product> response = new Response<Product>();
     	
-    	Optional<Product> product = productService.getById(id);
+    	Optional<Product> product = productService.findById(id);
     	
     	if(product.isEmpty()) {
     		response.getErrors().add("O produto não encontrado!");
