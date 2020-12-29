@@ -17,7 +17,8 @@ public class ProductDto {
 	@NotNull
 	private Integer amount;
 	
-	private Category category;
+	@NotNull
+	private Long categoryId;
 	
 	public String getName() {
 		return name;
@@ -42,20 +43,21 @@ public class ProductDto {
 	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
-	
-	public Category getCategory() {
-		return category;
+
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public Product toProduct() {
+	public Product toProduct(Category category) {
 		Product product = new Product();
 		product.setName(this.name);
 		product.setPrice(this.price);
 		product.setAmount(this.amount);
+		product.setCategory(category);
 
 		return product;
 	}

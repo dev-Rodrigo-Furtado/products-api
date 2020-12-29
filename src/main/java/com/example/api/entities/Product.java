@@ -39,7 +39,7 @@ public class Product implements Serializable {
 	@Column(name = "updatedAt", nullable = false)
 	private Date updatedAt;
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private Category category;
 	
 	public Long getId() {

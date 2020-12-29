@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.api.dtos.ProductDto;
+import com.example.api.entities.Category;
 import com.example.api.entities.Product;
 import com.example.api.response.Response;
+import com.example.api.services.CategoryService;
 import com.example.api.services.ProductService;
 
 @RestController
@@ -30,6 +32,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private CategoryService categoryService;
 
     @PostMapping
     public ResponseEntity<Response<Product>> insert(@Valid @RequestBody ProductDto productDto, BindingResult result) {
@@ -39,9 +44,14 @@ public class ProductController {
            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
            return ResponseEntity.badRequest().body(response);
        }
-
-       Product product = productService.persist(productDto.toProduct());
-
+       
+       Optional<Category> category = categoryService.findById(productDto.getCategoryId());
+       if(category.isEmpty()) {
+    	   response.getErrors().add("Categoria não encontrada!");
+           return ResponseEntity.badRequest().body(response);    	   
+       }
+              
+       Product product = productService.persist(productDto.toProduct(category.get()));
        response.setData(product);
 
        return ResponseEntity.ok(response);
@@ -86,14 +96,21 @@ public class ProductController {
     		return ResponseEntity.badRequest().body(response);
     	}
     	
-    	Product productDtoConverted= productDto.toProduct();
+    	Optional<Category> category = categoryService.findById(productDto.getCategoryId());
+    	
+    	 if(category.isEmpty()) {
+       	   response.getErrors().add("Categoria não encontrada!");
+              return ResponseEntity.badRequest().body(response); 
+         }
+    	
+    	Product productDtoConverted = productDto.toProduct(category.get());
     	Product productResponse = product.get();
     	productResponse.setName(productDtoConverted.getName());
     	productResponse.setPrice(productDtoConverted.getPrice());
     	productResponse.setAmount(productDtoConverted.getAmount());
+    	productResponse.setCategory(category.get());
     	
     	productService.persist(productResponse);
-    	
     	response.setData(productResponse);
     	
     	return ResponseEntity.ok(response);
