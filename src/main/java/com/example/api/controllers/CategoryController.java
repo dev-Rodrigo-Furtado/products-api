@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.api.dtos.CategoryDto;
 import com.example.api.entities.Category;
+import com.example.api.entities.User;
 import com.example.api.response.Response;
 import com.example.api.services.CategoryService;
+import com.example.api.services.UserService;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -30,6 +32,9 @@ public class CategoryController {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping
 	public ResponseEntity<Response<Category>> insert(@Valid @RequestBody CategoryDto categoryDto,
@@ -42,7 +47,14 @@ public class CategoryController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		
-		Category category = categoryDto.toCategory();
+		Optional<User> user = userService.findByEmail(categoryDto.getUserEmail());
+		
+		if(user.isEmpty()) {
+			response.getErrors().add("Usuário não encontrado!");
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		Category category = categoryDto.toCategory(user.get());
 		categoryService.persist(category);
 		
 		response.setData(category);

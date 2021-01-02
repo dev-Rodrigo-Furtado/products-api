@@ -28,3 +28,5 @@ CREATE TABLE users (
 
 	PRIMARY KEY(id)
 );
+
+INSERT INTO users(email, password, profile) VALUES ('user@email.com', '$2a$10$ZPoIDuSioyf2HvWmFr01o.wZDl02cwUsaIdz7/qOQ285FZjpRS5hy', 'ROLE_ADMIN');

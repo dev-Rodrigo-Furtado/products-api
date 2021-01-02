@@ -14,5 +14,4 @@ public interface UserService {
 	 */
 	User persist(User user);
 	Optional<User> findByEmail(String email);
-
 }

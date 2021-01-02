@@ -42,6 +42,9 @@ public class Product implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private Category category;
 	
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	private User user;
+	
 	public Long getId() {
 		return id;
 	}
@@ -102,6 +105,14 @@ public class Product implements Serializable {
 		return serialVersionUID;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@PrePersist
 	public void prePersist() {
 		Date currentDate = new Date();

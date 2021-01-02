@@ -5,9 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -30,6 +32,9 @@ public class Category implements Serializable {
 	
 	@Column(name = "updated_at", nullable = false)
 	private Date updatedAt;
+	
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	private User user;
 	
 	public Long getId() {
 		return id;
@@ -61,6 +66,14 @@ public class Category implements Serializable {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@PrePersist

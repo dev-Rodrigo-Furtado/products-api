@@ -1,0 +1,5 @@
+ALTER TABLE products ADD user_id BIGINT(20) NOT NULL DEFAULT 1;
+ALTER TABLE products ADD CONSTRAINT FK_UserProduct FOREIGN KEY(user_id) REFERENCES users(id);
+
+ALTER TABLE categories ADD user_id BIGINT(20) NOT NULL DEFAULT 1;
+ALTER TABLE categories ADD CONSTRAINT FK_UserCategory FOREIGN KEY(user_id) REFERENCES users(id);
